@@ -5,8 +5,6 @@ function InputElement(
         rightIcon,
         placeholder,
         label
-        
-
     }
 )
 {

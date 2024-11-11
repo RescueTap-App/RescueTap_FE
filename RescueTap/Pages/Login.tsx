@@ -1,4 +1,4 @@
-import { View, Text, Button, TouchableOpacity, StyleSheet} from "react-native"
+import { View, Text, Button, TouchableOpacity, StyleSheet, Pressable} from "react-native"
 import {Formik} from 'formik'
 import { TextInput } from "react-native-gesture-handler"
 import { Link } from "expo-router"
@@ -33,7 +33,12 @@ export default function Login(){
                         
                         {/* <Text></Text> */}
                         <View style={{position: 'relative'}}>
-                            <Button title="submit" color="#EF4136" disabled />
+                            {/* <Button title="submit" color="#EF4136" disabled /> */}
+                            <Link href="/Signup"style={{padding: 10, color: 'white', backgroundColor: "#EF4136"}}>
+                                <Pressable>
+                                    <Text>Submit</Text>
+                                </Pressable>
+                            </Link>
                         </View>
                     </View>
                 </Formik>
