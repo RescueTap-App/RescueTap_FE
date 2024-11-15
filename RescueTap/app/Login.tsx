@@ -28,15 +28,16 @@ export default function Login(){
                         
                         <View style={{flex:1, flexDirection:'row',justifyContent: 'space-between', alignItems: 'flex-end'}}>
                             <View><TextInput /><Text>Remember me?</Text></View>
-                            <Text style={{color: 'red'}}>Forget Password ?</Text>
+                            <Link href='/forgetPassword'><Pressable ><Text style={{color: 'red'}}>Forget Password ?</Text></Pressable></Link>
+                            
                         </View>
-                        
+                        <View></View>
                         {/* <Text></Text> */}
                         <View style={{position: 'relative'}}>
                             {/* <Button title="submit" color="#EF4136" disabled /> */}
-                            <Link href="/Signup"style={{padding: 10, color: 'white', backgroundColor: "#EF4136"}}>
-                                <Pressable>
-                                    <Text>Submit</Text>
+                            <Link href="/Signup"style={{padding: 10, position: 'absolute', top: 10, width: `100%`, paddingStart: 25}}>
+                                <Pressable style={{width: `90%`, backgroundColor: "#EF4136", padding: 10,borderRadius: 10  }}>
+                                    <Text style={{color: 'white', textAlign: 'center'}}>Submit</Text>
                                 </Pressable>
                             </Link>
                         </View>
@@ -49,6 +50,7 @@ export default function Login(){
 
 const Styles = StyleSheet.create({
     container: {
+        width: `100%`,
         padding: 0,
         marginTop: 20,
         backgroundColor: 'white',

@@ -1,7 +1,10 @@
 import {View} from 'react-native'
+import OnboardTemp from '@/Reuseables/onboardTemp'
 
-export default function (){
+export default function onBoard(){
     return (<>
-        <View></View>
+        <View>
+            <OnboardTemp></OnboardTemp>
+        </View>
     </>)
 }

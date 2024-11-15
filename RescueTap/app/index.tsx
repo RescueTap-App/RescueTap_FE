@@ -1,6 +1,8 @@
 import { Text, View } from "react-native";
-import Splash from "@/Pages/splash";
-import Login from "@/Pages/Login";
+// import Splash from "@/app/splash";
+// import OnBoard from "@/Pages/Onboarding";
+// import Login from "@/app/Login";
+import AppNavigator from '@/app/Navigator/AppNavigator'
 import { StyleSheet } from "react-native";
 
 export default function Index() {
@@ -8,15 +10,19 @@ export default function Index() {
     <View
       style={Styles.container}
     >
+      <AppNavigator />
       {/* <Splash></Splash> */}
-      <Login></Login>
+      {/* <OnBoard></OnBoard> */}
+      {/* <Login></Login> */}
     </View>
   );
 }
 
 const Styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white',
+    // backgroundColor: 'white',
+    flex:1,
+    justifyContent: "flex-start",
     width: 'auto',
     height: 'auto',
   }
