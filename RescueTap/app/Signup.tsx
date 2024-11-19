@@ -41,7 +41,9 @@ export default function Signup(){
                     </View>
                     </View>
                 </Formik>
-                <View></View>
+                <View>
+                    
+                </View>
             
         </View>
     </>)

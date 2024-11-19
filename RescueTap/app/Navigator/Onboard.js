@@ -15,18 +15,21 @@ const Dots = ({selected}) => {
                 height: 6,
                 marginHorizontal: 3,
                 borderRadius: 12,
-                backgroundColor
+                backgroundColor: 'white',
+                // marginBottom: 10,
+                marginBottom: 10,
             }}
         />
     );
 }
 
 const Skip = ({...props}) => (
+    
     <TouchableOpacity
         style={{marginHorizontal:10}}
         {...props}
     >
-        <Text style={{fontSize:16}}>Skip</Text>
+        <View style={{padding: 10, backgroundColor: 'red', paddingLeft: 20,paddingRight: 20}}><Text style={{fontSize:16, color: 'white'}}>Skip</Text></View>
     </TouchableOpacity>
 );
 
@@ -48,14 +51,24 @@ const Done = ({...props}) => (
     </TouchableOpacity>
 );
 
+const Prev = ({...props}) =>{
+    <TouchableOpacity style={{marginHorizontal: 10}}>
+        <View>
+            <Text style={{fontSize: 16}}>Prev</Text>
+        </View>
+    </TouchableOpacity>
+}
+
 const OnboardingScreen = ({navigation}) => {
     return (
         <Onboarding
-        SkipButtonComponent={Skip}
+        // SkipButtonComponent={Skip}
         NextButtonComponent={Next}
         DoneButtonComponent={Done}
+        PrevButtonComponent = {Prev}
         DotComponent={Dots}
         bottomBarColor='#fff'
+
         onSkip={() => navigation.replace("Login")}
         onDone={() => navigation.navigate("Login")}
         pages={[

@@ -1,8 +1,13 @@
 import { View, Text, Button, TouchableOpacity, StyleSheet, Pressable} from "react-native"
+import { useState } from "react";
+import CheckBox from '@react-native-community/checkbox';
+
 import {Formik} from 'formik'
 import { TextInput } from "react-native-gesture-handler"
 import { Link } from "expo-router"
 
+
+const [toggleCheckBox, setToggleCheckBox] = useState(false)
 
 export default function Login(){
     function sub(){
@@ -27,7 +32,7 @@ export default function Login(){
                         <TextInput style={{padding:10, borderWidth: 1, borderColor: 'grey', borderRadius: 8}}/>
                         
                         <View style={{flex:1, flexDirection:'row',justifyContent: 'space-between', alignItems: 'flex-end'}}>
-                            <View><TextInput /><Text>Remember me?</Text></View>
+                            <View><CheckBox disabled={false} value={toggleCheckBox} onValueChange={(newValue) => setToggleCheckBox(newValue)} /><TextInput /><Text>Remember me?</Text></View>
                             <Link href='/forgetPassword'><Pressable ><Text style={{color: 'red'}}>Forget Password ?</Text></Pressable></Link>
                             
                         </View>
@@ -52,7 +57,7 @@ const Styles = StyleSheet.create({
     container: {
         width: `100%`,
         padding: 0,
-        marginTop: 20,
+        marginTop: 0,
         backgroundColor: 'white',
         paddingLeft: 20,
         paddingRight: 20,
