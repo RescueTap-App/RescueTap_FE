@@ -1,9 +1,7 @@
-import { View, Text } from "react-native";
+import { View } from "react-native";
+import { Link } from "expo-router";
+import { Text } from "@/components/ui/Text";
 
 export default function Page() {
-  return (
-    <View>
-      <Text>page</Text>
-    </View>
-  );
+  return <View></View>;
 }
