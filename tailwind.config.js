@@ -1,4 +1,5 @@
-import { colors } from "./constants/Colors";
+import { colors } from "./constants/colors";
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   //* Always update this to include paths to all components files.
