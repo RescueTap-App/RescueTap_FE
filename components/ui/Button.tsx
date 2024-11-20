@@ -9,28 +9,31 @@ import { Text } from "./Text";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/cn";
 
-const buttonVariants = cva("flex-row items-center justify-center", {
-  variants: {
-    variant: {
-      default: "bg-primary",
-      destructive: "bg-destructive",
-      outline: "border border-input bg-background",
-      secondary: "bg-secondary",
-      ghost: "hover:bg-accent hover:text-accent-foreground",
-      link: "underline-offset-4 hover:underline text-primary",
+const buttonVariants = cva(
+  "flex-row items-center justify-center rounded-[10px]",
+  {
+    variants: {
+      variant: {
+        default: "bg-primary-base",
+        destructive: "bg-destructive",
+        outline: "border border-primary-base bg-wite",
+        secondary: "bg-secondary",
+        ghost: "hover:bg-accent hover:text-accent-foreground",
+        link: "underline-offset-4 hover:underline text-primary",
+      },
+      size: {
+        default: "h-10 px-4 py-2",
+        sm: "h-9 px-3",
+        lg: "h-11 px-8",
+        icon: "h-10 w-10",
+      },
     },
-    size: {
-      default: "h-10 px-4 py-2",
-      sm: "h-9 px-3",
-      lg: "h-11 px-8",
-      icon: "h-10 w-10",
+    defaultVariants: {
+      variant: "default",
+      size: "default",
     },
-  },
-  defaultVariants: {
-    variant: "default",
-    size: "default",
-  },
-});
+  }
+);
 
 interface ButtonProps
   extends PressableProps,
@@ -94,9 +97,9 @@ const Button = React.forwardRef<View, ButtonProps>(
         {typeof children === "string" ? (
           <Text
             className={cn(
-              "text-sm font-medium",
+              "text-lg font-medium text-white leading-none",
               variant === "destructive" && "text-destructive-foreground",
-              //   variant === "primary" && "text-primary-foreground",
+              variant === "outline" && "text-black",
               variant === "secondary" && "text-secondary-foreground",
               variant === "ghost" && "text-foreground",
               variant === "link" && "text-primary underline",
@@ -126,7 +129,8 @@ const Button = React.forwardRef<View, ButtonProps>(
           <View
             className={cn(
               "flex-row items-center justify-center",
-              pressed && "opacity-70"
+              pressed && "opacity-70",
+              disabled && "bg-dis_button"
             )}
           >
             {content}

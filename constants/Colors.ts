@@ -1,6 +1,6 @@
 export const colors = {
   primary: {
-    base: "#005555",
+    base: "#EF4136",
     50: "#FFEDE5",
     100: "#FFC8B2",
     200: "#FFA384",
