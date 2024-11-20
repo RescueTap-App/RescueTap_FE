@@ -31,4 +31,5 @@ export const colors = {
   info: "#004CE8",
   disabled: "#D8D8D8",
   dis_button: "#879AC1",
+  accent: '',
 };
