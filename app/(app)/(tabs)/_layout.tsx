@@ -10,7 +10,14 @@ import {
 } from "react-native";
 import { Text } from "@/components/ui/Text";
 import { cn } from "@/lib/cn";
-import { Home, Calendar, Bell, User, AlertCircle } from "lucide-react-native";
+import {
+  Home,
+  Calendar,
+  Bell,
+  User,
+  AlertCircle,
+  HomeIcon,
+} from "lucide-react-native";
 import { FontAwesome } from "@expo/vector-icons";
 
 const styles = StyleSheet.create({
@@ -54,9 +61,7 @@ export default function TabLayout() {
         name="index"
         options={{
           title: "Home",
-          tabBarIcon: ({ color }) => (
-            <FontAwesome size={28} name="home" color={color} />
-          ),
+          tabBarIcon: ({ color }) => <HomeIcon size={28} color={color} />,
         }}
       />
       <Tabs.Screen
@@ -94,9 +99,7 @@ export default function TabLayout() {
         name="personal-info/index"
         options={{
           title: "Profile",
-          tabBarIcon: ({ color }) => (
-            <FontAwesome size={24} name="user" color={color} />
-          ),
+          tabBarIcon: ({ color }) => <User size={24} color={color} />,
         }}
       />
 
