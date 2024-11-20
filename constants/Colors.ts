@@ -12,7 +12,7 @@ export const colors = {
     800: "#A50000",
     900: "#7F0000",
   },
-  secondary: {},
+  accent: {},
   neutral: {
     50: "#F3F3F3",
     100: "#DDDDDD",
