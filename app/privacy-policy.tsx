@@ -2,6 +2,8 @@ import { View, ScrollView } from "react-native";
 import { Link } from "expo-router";
 import { Text } from "@/components/ui/Text";
 import { Divider } from "@/components/ui/Divider";
+import { Checkbox } from "@/components/ui/Checkbox";
+import { Button } from "@/components/ui/Button";
 
 export default function Page() {
   return (
@@ -42,7 +44,58 @@ export default function Page() {
             - For Communication: With your permission, we may send you alerts, notifications, or marketing
             messages. You can opt out of these communications at any time.</Text>
           </View>
-
+          <View>
+            <Text variant={'subhead'}>3. How We Protect Your Information</Text>
+            <Text variant={'body'}>
+            Data Encryption: We use encryption to protect sensitive data, including personal information, health
+            data, and location information.
+            - Access Control: Only authorized personnel and third-party service providers have access to sensitive
+            information.
+            - Secure Storage: All data is stored on secure servers in compliance with industry standards and relevant
+            regulations.</Text>
+          </View>
+          <View>
+            <Text variant={'subhead'}>4. Sharing of Information</Text>
+            <Text variant={'body'}>
+            - Emergency Responders and Healthcare Providers: When needed, we share necessary information with
+            healthcare professionals and emergency responders.
+            - Third-Party Service Providers: We may share information with trusted partners who perform services on
+            our behalf, such as data hosting and analytics. These providers are contractually bound to confidentiality
+            and data protection standards.
+            - Legal Requirements: We may disclose information if required by law or to protect the rights, property, or
+            safety of our users and RescueTap.</Text>
+          </View>
+          <View>
+            <Text variant={'subhead'}>5. User Rights and Choices</Text>
+            <Text variant={'body'}>
+            - Access and Correction: You may access and update your personal information through the App.
+            - Data Retention: We retain personal data as long as necessary to fulfill the purposes outlined in this policy
+            or as required by law.
+            - Deletion: You may request deletion of your account and personal data. We will comply unless retention is
+            required for legal or business purposes.</Text>
+          </View>
+          <View>
+            <Text variant={'subhead'}>   6. Children’s Privacy</Text>
+            <Text variant={'body'}>
+            - RescueTap is not intended for users under the age of 18. We do not knowingly collect personal
+              information from children.</Text>
+          </View>
+          <View>
+            <Text variant={'subhead'}>7. Cookies and Tracking 
+            Technologies</Text>
+            <Text variant={'body'}>
+            - We use cookies and similar technologies to enhance user experience, track usage patterns, and optimize
+            functionality. You can manage cookie preferences through your device settings.</Text>
+          </View>
+          <View>
+            <Text variant={'subhead'}>8. Contact Us</Text>
+            <Text variant={'body'}>
+            - For questions or concerns about this Privacy Policy, please contact us at [Insert Contact Information].
+            By using the RescueTap App, you agree to these policies and our commitment to safeguarding your data.</Text>
+          </View>
+          <View className="px-5">
+          <Checkbox checked={true} onPress={()=>{}}/><Button variant={'destructive'} onPress={()=>{}} size='lg'> Accept & Continue </Button>
+        </View>
     </ScrollView>
     </View>
   );
