@@ -24,7 +24,7 @@ const buttonVariants = cva(
       size: {
         default: "h-10 px-4 py-2",
         sm: "h-9 px-3",
-        lg: "h-11 px-8",
+        lg: "h-12 px-8",
         icon: "h-10 w-10",
       },
     },
@@ -99,7 +99,7 @@ const Button = React.forwardRef<View, ButtonProps>(
             className={cn(
               "text-lg font-medium text-white leading-none",
               variant === "destructive" && "text-destructive-foreground",
-              variant === "outline" && "text-black",
+              variant === "outline" && "text-primary-base",
               variant === "secondary" && "text-secondary-foreground",
               variant === "ghost" && "text-foreground",
               variant === "link" && "text-primary underline",
@@ -121,7 +121,8 @@ const Button = React.forwardRef<View, ButtonProps>(
         disabled={disabled || isLoading}
         className={cn(
           buttonVariants({ variant, size, className }),
-          (disabled || isLoading) && "opacity-50"
+          isLoading && "opacity-50",
+          disabled && "bg-dis_button"
         )}
         {...props}
       >
@@ -129,8 +130,7 @@ const Button = React.forwardRef<View, ButtonProps>(
           <View
             className={cn(
               "flex-row items-center justify-center",
-              pressed && "opacity-70",
-              disabled && "bg-dis_button"
+              pressed && "opacity-70"
             )}
           >
             {content}

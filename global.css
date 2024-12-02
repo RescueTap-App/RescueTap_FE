@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  font-size: 16px;
+}
 @layer base {
   :root {
     /* --primary: #007bff;

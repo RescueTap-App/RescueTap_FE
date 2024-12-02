@@ -108,11 +108,14 @@ const InputField = forwardRef<TextInput, InputFieldProps>(
     };
 
     return (
-      <View className="w-full">
+      <View className="w-full relative z-0">
         {label && (
           <Text
             variant="subhead"
-            className={cn("mb-1", error ? "text-error" : "text-neutral-900")}
+            className={cn(
+              "mb-2 absolute -top-3 left-4 z-20 bg-white px-[2px]",
+              error ? "text-error" : "text-neutral-900"
+            )}
           >
             {label}
           </Text>

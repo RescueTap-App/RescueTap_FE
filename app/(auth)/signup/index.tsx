@@ -11,10 +11,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AntDesign } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
+import { useAuth } from "@/components/AuthContext";
 
 const createAccountSchema = z.object({
   firstName: z.string().min(2, "First name must be at least 2 characters"),
   lastName: z.string().min(2, "Last name must be at least 2 characters"),
+  email: z.string().email("Invalid email address"),
   phoneNumber: z
     .string()
     .min(10, "Phone number must be at least 10 digits")
@@ -33,24 +36,49 @@ const createAccountSchema = z.object({
 type CreateAccountFormData = z.infer<typeof createAccountSchema>;
 
 export default function SignUpIndexScreen() {
+  const router = useRouter();
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const { register } = useAuth();
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    watch,
+    formState: { errors, isValid },
   } = useForm<CreateAccountFormData>({
     resolver: zodResolver(createAccountSchema),
     defaultValues: {
       firstName: "",
       lastName: "",
       phoneNumber: "",
+      email: "",
       password: "",
       acceptTerms: true, // Change to false as defualt
     },
   });
 
-  const onSubmit = (data: CreateAccountFormData) => {
-    console.log(data);
-    // Handle account creation
+  const firstName = watch("firstName");
+  const lastName = watch("lastName");
+  const password = watch("password");
+  const email = watch("email");
+  const phoneNumber = watch("phoneNumber");
+
+  const onSubmit = async (data: CreateAccountFormData) => {
+    //TODO:  check if terms is accepted
+    setIsSubmitting(true);
+    try {
+      await register({
+        email: data.email,
+        password: data.password,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        phoneNumber: data.phoneNumber,
+      });
+      router.replace("/(auth)/signup/otp");
+    } catch (error) {
+      console.error("Register error:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -70,7 +98,7 @@ export default function SignUpIndexScreen() {
         </Text>
       </View>
 
-      <View className="space-y-4">
+      <View className="flex gap-4">
         <Controller
           control={control}
           name="firstName"
@@ -116,6 +144,20 @@ export default function SignUpIndexScreen() {
 
         <Controller
           control={control}
+          name="email"
+          render={({ field: { onChange, value } }) => (
+            <InputField
+              label="Email address"
+              placeholder="youremail@address.com"
+              onChangeText={onChange}
+              value={value}
+              error={errors.email?.message}
+            />
+          )}
+        />
+
+        <Controller
+          control={control}
           name="password"
           render={({ field: { onChange, value } }) => (
             <InputField
@@ -138,12 +180,14 @@ export default function SignUpIndexScreen() {
               onPress={() => onChange(!value)}
               error={!!errors.acceptTerms}
               label={
-                <Text>
-                  I agree that I have read the{" "}
-                  <Text className="text-primary-base">
-                    Terms and Conditions
+                <>
+                  <Text>
+                    I agree that I have read the{" "}
+                    <Text className="text-primary-base">
+                      Terms and Conditions
+                    </Text>
                   </Text>
-                </Text>
+                </>
               }
             />
           )}
@@ -151,7 +195,22 @@ export default function SignUpIndexScreen() {
       </View>
 
       <View className="mt-8">
-        <Button onPress={handleSubmit(onSubmit)}>Create account</Button>
+        <Button
+          size="lg"
+          isLoading={isSubmitting}
+          disabled={
+            isSubmitting ||
+            !isValid ||
+            !firstName ||
+            !lastName ||
+            !phoneNumber ||
+            !email ||
+            !password
+          }
+          onPress={handleSubmit(onSubmit)}
+        >
+          Create account
+        </Button>
       </View>
     </SafeAreaView>
   );

@@ -7,7 +7,7 @@ import { Text } from "./Text";
 interface CheckboxProps extends Omit<TouchableOpacityProps, "onPress"> {
   checked: boolean;
   onPress: () => void;
-  label?: string;
+  label?: React.ReactElement | string;
   error?: boolean;
 }
 
@@ -67,7 +67,7 @@ const Checkbox = forwardRef<View, CheckboxProps>(
             />
           )}
         </View>
-        {label && (
+        {typeof label === "string" ? (
           <Text
             variant="body"
             className={cn(
@@ -77,6 +77,8 @@ const Checkbox = forwardRef<View, CheckboxProps>(
           >
             {label}
           </Text>
+        ) : (
+          label
         )}
       </TouchableOpacity>
     );

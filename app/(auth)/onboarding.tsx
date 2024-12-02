@@ -9,7 +9,8 @@ import Animated, {
   SlideOutLeft,
 } from "react-native-reanimated";
 import { cn } from "@/lib/cn";
-import { Link } from "expo-router";
+import { Link, useRouter } from "expo-router";
+import { useAuth } from "@/components/AuthContext";
 
 const { width } = Dimensions.get("window");
 
@@ -18,29 +19,30 @@ const onboardingData = [
     title: "Instant Help at Your Fingertips",
     description:
       "Send emergency messages with a single tap to your trusted contacts. Help is just one button away!",
-    image: "../../assets/images/onboarding/img00.png",
+    image: require("@/assets/images/onboarding/img00.png"),
   },
   {
     title: "Scan & Verify for Safe Rides",
     description:
       "Quickly scan a car's QR code to check the driver's details and vehicle information for your safety.",
-    image: "../../assets/images/onboarding/img01.png",
+    image: require("@/assets/images/onboarding/img01.png"),
   },
   {
     title: "Your Safety is Our Priority",
     description:
       "Stay connected to your loved ones and feel confident when traveling with real-time emergency support",
-    image: "../../assets/images/onboarding/img02.png",
+    image: require("@/assets/images/onboarding/img02.png"),
   },
 ];
 
 export default function Onboarding() {
+  const router = useRouter();
+  const { setHasSeenOnboarding } = useAuth();
   const [currentIndex, setCurrentIndex] = React.useState(0);
   const scrollRef = React.useRef<ScrollView>(null);
   const [showSplash, setShowSplash] = React.useState(true);
 
   React.useEffect(() => {
-    // Hide splash screen after 2 seconds
     const timer = setTimeout(() => {
       setShowSplash(false);
     }, 2000);
@@ -76,6 +78,11 @@ export default function Onboarding() {
     }
   };
 
+  const handleGetStarted = async () => {
+    await setHasSeenOnboarding(true);
+    router.replace("/(auth)/signup");
+  };
+
   if (showSplash) {
     return (
       <Animated.View
@@ -109,18 +116,19 @@ export default function Onboarding() {
             exiting={SlideOutLeft}
             className="w-screen flex-1"
           >
-            <View className="flex-1 items-center justify-center px-6">
+            <View className="flex-1 flex items-center justify-center px-6">
+              <Pressable onPress={handleGetStarted} className="w-full mb-8">
+                <Text className="font-bold text-right">Skip</Text>
+              </Pressable>
               <Image
-                source={{ uri: item.image }}
-                height={300}
-                width={300}
-                className="w-72 h-72 mb-8 bg-gray-200 rounded overflow-hidden"
-                resizeMode="contain"
+                source={item.image}
+                className="w-[96%] aspect-square mb-8 bg-gray-200 rounded-lg overflow-hidden"
+                resizeMode="cover"
               />
-              <Text className="text-2xl font-bold text-center mb-4">
+              <Text className="text-4xl font-black text-center mb-4">
                 {item.title}
               </Text>
-              <Text className="text-neutral-600 text-center mb-8">
+              <Text className="text-neutral-600 text-xl text-center mb-8">
                 {item.description}
               </Text>
             </View>
@@ -128,7 +136,6 @@ export default function Onboarding() {
         ))}
       </ScrollView>
 
-      {/* Navigation Dots */}
       <View className="flex-row justify-center items-center space-x-2 gap-3 mb-8">
         {onboardingData.map((_, index) => (
           <Pressable
@@ -142,23 +149,22 @@ export default function Onboarding() {
         ))}
       </View>
 
-      {/* Navigation Buttons */}
       <View className="px-6 pb-8">
         {currentIndex === onboardingData.length - 1 ? (
-          <Link asChild href={"/(auth)/signup"}>
-            <Button
-              className="text-lg"
-              variant="default"
-              onPress={() => console.log("Get Started")}
-            >
-              Get Started
-            </Button>
-          </Link>
+          <Button
+            className="text-lg"
+            variant="default"
+            size="lg"
+            onPress={handleGetStarted}
+          >
+            Get Started
+          </Button>
         ) : (
           <View className="flex-row justify-between">
             {currentIndex > 0 ? (
               <Button
                 variant="outline"
+                size="lg"
                 onPress={handleBack}
                 className="flex-1 mr-2 text-lg"
               >
@@ -169,6 +175,7 @@ export default function Onboarding() {
             )}
             <Button
               variant="default"
+              size="lg"
               onPress={handleNext}
               className="flex-1 ml-2 text-lg"
             >
@@ -176,8 +183,8 @@ export default function Onboarding() {
             </Button>
           </View>
         )}
-        <Link href={"/(auth)/login"} asChild>
-          <Pressable onPress={() => console.log("Sign In")} className="mt-4">
+        <Link href="/(auth)/login" asChild>
+          <Pressable className="mt-4">
             <Text className="text-center">
               Already have an account?{" "}
               <Text className="text-blue-300 font-semibold">Sign in</Text>
