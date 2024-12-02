@@ -12,7 +12,19 @@ export const colors = {
     800: "#A50000",
     900: "#7F0000",
   },
-  accent: {},
+  accent: {
+    base: "#F8B400",
+    50: "#F1F3FF",
+    100: "#D3DBFF",
+    200: "#B4C3FF",
+    300: "#94ADFF",
+    400: "#7397FA",
+    500: "#5283EB",
+    600: "#326FD6",
+    700: "#145BBA",
+    800: "00499A",
+    900: "#063776",
+  },
   neutral: {
     50: "#F3F3F3",
     100: "#DDDDDD",
@@ -30,5 +42,5 @@ export const colors = {
   warning: "#FFE16A",
   info: "#004CE8",
   disabled: "#D8D8D8",
-  dis_button: "#879AC1",
+  dis_button: "#868686",
 };
