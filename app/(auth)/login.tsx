@@ -18,7 +18,8 @@ const loginSchema = z.object({
     .min(11, "Phone number must be 11 digits")
     .max(11, "Phone number must be 11 digits")
     .regex(/^[0-9]+$/, "Phone number must only contain numbers"),
-  password: z.string().min(8, "Password must be at least 8 characters"),
+  password: z.string().min(4, "Password must be at least 8 characters"),
+  // password: z.string().min(8, "Password must be at least 8 characters"),
   rememberMe: z.boolean().optional(),
 });
 
@@ -118,7 +119,7 @@ export default function LoginIndexScreen() {
         </View>
       </View>
 
-      <View className="mt-auto">
+      <View className="mt-auto flex gap-4">
         <Button
           size="lg"
           variant={"outline"}
@@ -140,6 +141,12 @@ export default function LoginIndexScreen() {
         >
           Continue
         </Button>
+        <Pressable onPress={() => router.replace("/(auth)/signup")}>
+          <Text className="text-center">
+            Don't have an account?{" "}
+            <Text className="text-accent-600">Sign up</Text>
+          </Text>
+        </Pressable>
       </View>
     </SafeAreaView>
   );

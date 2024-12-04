@@ -54,6 +54,7 @@ export default function SignUpIndexScreen() {
       password: "",
       acceptTerms: true, // Change to false as defualt
     },
+    mode: "all",
   });
 
   const firstName = watch("firstName");
@@ -211,6 +212,11 @@ export default function SignUpIndexScreen() {
         >
           Create account
         </Button>
+        <Pressable onPress={() => router.replace("/(auth)/login")}>
+          <Text className="text-center">
+            Already have an account? <Text className="text-error">Log in</Text>
+          </Text>
+        </Pressable>
       </View>
     </SafeAreaView>
   );

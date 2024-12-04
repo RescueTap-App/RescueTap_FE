@@ -13,6 +13,7 @@ interface AuthContextType {
     lastName: string;
     phoneNumber: string;
   }) => Promise<void>;
+  verifyOtp: (data: { id: string; token: string }) => Promise<void>;
   logout: () => Promise<void>;
   isLoading: boolean;
   hasSeenOnboarding: boolean;
@@ -69,6 +70,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     setUser(response.user);
   };
 
+  const verifyOtp = async (data: { id: string; token: string }) => {
+    const response = await authService.verifyOtp(data);
+    // setUser(response.user);
+    // TODO: set verification OTP
+  };
+
   const logout = async () => {
     await authService.logout();
     setUser(null);
@@ -87,6 +94,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         login,
         register,
         logout,
+        verifyOtp,
         isLoading,
         hasSeenOnboarding,
         setHasSeenOnboarding: setOnboardingStatus,

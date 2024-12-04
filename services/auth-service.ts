@@ -38,6 +38,24 @@ export interface RegisterResponse {
   user: User;
 }
 
+export interface VerifyOtpResponse {
+  message: string;
+  user: {
+    _id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    phoneNumber: string;
+    // "password": "$2a$10$WrN3wVQkzK22gLy/kr3r4ujNn4Y.TQ0R44BnQl0vQpcTqVYI1QLS2",
+    verified: boolean;
+    role: "user";
+    emergencyContact: any[];
+    // "createdAt": "2024-11-18T16:10:15.533Z",
+    // "updatedAt": "2024-11-18T16:10:15.533Z",
+    // "__v": 0
+  };
+}
+
 class AuthService {
   private async setTokens(tokens: Partial<AuthTokens>) {
     if (tokens.access_token) {
@@ -101,10 +119,25 @@ class AuthService {
     await AsyncStorage.removeItem("refreshToken");
   }
 
-  async verifyOtp() {
+  async verifyOtp(data: { id: string; token: string }) {
     // /users/verifyToken/:token?id=674157c9cab5b315a500be07
     try {
-      // const response = await axios.post(`${API_URL}/users/verifyToken/`, data)
+      const response = await axios.post(
+        `${API_URL}/users/verifyToken/${data.token}?id=${data.id}`
+      );
+      return response.data as { message: string };
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        throw new Error(error.response?.data?.message || "Registration failed");
+      }
+      throw error;
+    }
+  }
+
+  async requestNewOtp(id: string) {
+    try {
+      const response = await axios.post(`${API_URL}/users/resendOtp/${id}`);
+      return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
         throw new Error(error.response?.data?.message || "Registration failed");
