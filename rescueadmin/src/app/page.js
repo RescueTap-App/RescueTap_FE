@@ -108,8 +108,11 @@ export default function Home() {
         <div className="h-full w-full bg-white text-black px-5">
           <div className="w-full px-24">
             <div className="mb-10 centered">
-              <Image src={RescueImg} alt="RescueTap Logo" width={75} height={75}/>
-              <p className="text-xs">Rescue Within Reach</p>
+              <div className="flex justify-center">
+                <Image src={RescueImg} alt="RescueTap Logo" width={75} height={75}/>
+              </div>
+              
+              <p className="text-xs text-center">Rescue Within Reach</p>
             </div>
             <div className="mb-3 text-center">
               <h1 className="font-black ">Admin Log In</h1>
