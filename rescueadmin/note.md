@@ -1,0 +1,1 @@
+print the QRcode from the Admin side - The QR code 
