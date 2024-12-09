@@ -19,7 +19,11 @@ class EmergencyService {
     }
   }
 
-  public asyncgetEmergencyContact(name: string): SWRResponse<any, any, any> {
+  public getEmergencyContact(name: string): SWRResponse<any, any, any> {
+    return useSWR("/dasfdsf");
+  }
+
+  public getEmergencyContacts() {
     return useSWR("/dasfdsf");
   }
 }

@@ -4,7 +4,7 @@ import { Text } from "./Text";
 import { Feather } from "@expo/vector-icons";
 import { cn } from "@/lib/cn";
 import { cva, type VariantProps } from "class-variance-authority";
-import { colors } from "@/constants/colors";
+import { colors } from "@/constants/Colors";
 
 const inputFieldVariants = cva(
   "w-full min-h-[48px] px-4 py-2 rounded-lg border-[1px] bg-white",
