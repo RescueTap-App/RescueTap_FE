@@ -1,1 +1,1 @@
-print the QRcode from the Admin side - The QR code 
+print/encrypt the QRcode from the Admin side - The QR code from the admin is what shows on the mobile application
