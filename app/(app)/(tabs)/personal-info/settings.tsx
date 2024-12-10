@@ -1,7 +1,6 @@
 import React from "react";
-import { View, ScrollView, Switch, Pressable } from "react-native";
+import { View, ScrollView, Switch, Pressable, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Text } from "@/components/ui/Text";
 import {
   ArrowLeft,
   Bell,
@@ -9,6 +8,7 @@ import {
   Lock,
   ChevronRight,
 } from "lucide-react-native";
+import { router } from "expo-router";
 
 interface SettingItem {
   icon: React.ReactNode;
@@ -45,42 +45,44 @@ export default function SettingsScreen() {
   ];
 
   return (
-    <SafeAreaView className="flex-1 bg-white">
-      <ScrollView>
-        <View className="p-4">
-          <View className="flex-row items-center mb-6">
-            <Pressable onPress={() => console.log("Go back")}>
-              <ArrowLeft size={24} color="#000" />
-            </Pressable>
-            <Text className="text-lg font-semibold ml-4">Settings</Text>
-          </View>
+    <SafeAreaView className="flex-1 p-4 bg-white">
+      <View className="flex-row items-center mb-12">
+        <Pressable
+          onPress={() =>
+            router.canGoBack() ? router.back() : router.replace("/(app)/(tabs)")
+          }
+        >
+          <ArrowLeft size={24} color="#000" />
+        </Pressable>
+        <Text className="text-xl font-semibold ml-4 text-center flex-1">
+          Settings
+        </Text>
+      </View>
 
-          <View className="space-y-4">
-            {settingItems.map((item, index) => (
-              <Pressable
-                key={index}
-                onPress={item.onPress}
-                className="flex-row items-center justify-between py-2"
-              >
-                <View className="flex-row items-center">
-                  {item.icon}
-                  <Text className="ml-3 text-base">{item.title}</Text>
-                </View>
-                {item.type === "toggle" ? (
-                  <Switch
-                    value={item.value}
-                    onValueChange={item.onPress}
-                    trackColor={{ false: "#D1D5DB", true: "#005555" }}
-                    thumbColor={item.value ? "#FFFFFF" : "#F3F4F6"}
-                  />
-                ) : (
-                  <ChevronRight size={24} color="#5E5E5E" />
-                )}
-              </Pressable>
-            ))}
-          </View>
-        </View>
-      </ScrollView>
+      <View className="gap-4">
+        {settingItems.map((item, index) => (
+          <Pressable
+            key={index}
+            onPress={item.onPress}
+            className="flex-row items-center h-[49px] px-3 justify-between py-2 bg-white border border-neutral-100 shadow rounded-lg"
+          >
+            <View className="flex-row items-center">
+              {item.icon}
+              <Text className="ml-3 text-lg">{item.title}</Text>
+            </View>
+            {item.type === "toggle" ? (
+              <Switch
+                value={item.value}
+                onValueChange={item.onPress}
+                trackColor={{ false: "#D1D5DB", true: "#005555" }}
+                thumbColor={item.value ? "#FFFFFF" : "#F3F4F6"}
+              />
+            ) : (
+              <ChevronRight size={24} color="#5E5E5E" />
+            )}
+          </Pressable>
+        ))}
+      </View>
     </SafeAreaView>
   );
 }

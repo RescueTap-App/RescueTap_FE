@@ -9,11 +9,12 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.rescuetap.rescuetap"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./assets/images/rescue-tap-logo.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.rescuetap.rescuetap"
@@ -28,10 +29,19 @@
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/splash-icon.png",
+          "image": "./assets/images/rescue-tap-logo.png",
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
+        }
+      ],
+      "expo-barcode-scanner",
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow RescueTap to access your camera",
+          "microphonePermission": "Allow RescueTap to access your microphone",
+          "recordAudioAndroid": true
         }
       ]
     ],

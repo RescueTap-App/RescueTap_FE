@@ -1,12 +1,13 @@
 import React from "react";
-import { View, Image, Modal, Pressable } from "react-native";
+import { View, Image, ActivityIndicator, Modal, Pressable } from "react-native";
 import { Text } from "@/components/ui/Text";
 import { Button } from "@/components/ui/Button";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
 import { ChevronLeft, AlertTriangle, Shield } from "lucide-react-native";
-import { ActivityIndicator } from "react-native";
 import * as Haptics from "expo-haptics";
+import { driverService } from "@/services/driver-service";
+import { Avatar } from "@/components/ui/Avatar";
 
 interface DriverDetailsProps {
   driver: {
@@ -27,6 +28,11 @@ export default function DriverDetailsScreen({
     cluster: "Lugbe Cluster 5",
   },
 }: DriverDetailsProps) {
+  const {
+    data,
+    isLoading: loadingDriver,
+    error,
+  } = driverService.getDriver("asdf");
   const [isLoading, setIsLoading] = React.useState(false);
   const [showRejectionModal, setShowRejectionModal] = React.useState(false);
   const [selectedReason, setSelectedReason] = React.useState<string | null>(
@@ -55,7 +61,7 @@ export default function DriverDetailsScreen({
 
   if (isLoading) {
     return (
-      <SafeAreaView className="flex-1 bg-white">
+      <SafeAreaView className="flex-1 bg-white p-4">
         <View className="p-6">
           <Pressable
             onPress={() => router.back()}
@@ -75,122 +81,121 @@ export default function DriverDetailsScreen({
   }
 
   return (
-    <SafeAreaView className="flex-1 bg-white">
-      <View className="p-6 flex-1">
-        <Text className="text-xl font-semibold mb-6">Driver's Details</Text>
+    <SafeAreaView className="flex-1 bg-white p-4 gap-8">
+      {/* <Text className="text-xl font-semibold mb-6">Driver's Details</Text> */}
 
-        <View className="items-center mb-8">
-          <Image
-            source={{ uri: driver.image }}
-            className="w-24 h-24 rounded-full mb-4"
-          />
-          <Text className="text-lg font-semibold">{driver.name}</Text>
-          <Text className="text-neutral-600">Driver</Text>
-          <Text className="text-neutral-500">{driver.cluster}</Text>
-        </View>
+      <View className="items-center justify-center mb-8">
+        <Avatar source={""} fallback="driver" shape={"circle"} size={"3xl"} />
+        <Text className="text-lg font-semibold capitalize text-[20px]">
+          {driver.name}
+        </Text>
+        <Text className="text-accent-600 text-lg">Driver</Text>
+        <Text className="text-neutral-500 text-lg">{driver.cluster}</Text>
+      </View>
 
-        <View className="items-center mb-8">
-          <Image
-            source={{ uri: driver.vehicleImage }}
-            className="w-48 h-32 rounded-lg mb-4"
-          />
-          <View className="bg-neutral-100 px-4 py-2 rounded-lg">
-            <Text className="text-lg font-semibold">{driver.licensePlate}</Text>
-          </View>
-        </View>
-
-        <View className="flex-row items-center mb-8 bg-blue-50 p-4 rounded-lg">
-          <Shield className="text-blue-500 mr-2" />
-          <Text className="text-blue-800 flex-1">
-            For your safety, ensure the driver's photo, vehicle model, and plate
-            number match the information displayed in the app.
+      <View className="items-center mb-8 flex-1 justify-center">
+        <Image
+          source={{ uri: driver.vehicleImage }}
+          className="w-48 h-32 rounded-lg mb-4"
+        />
+        <View className="bg-neutral-100 px-4 py-2 rounded-lg">
+          <Text className="text-2xl font-semibold text-primary-600">
+            {driver.licensePlate}
           </Text>
         </View>
+      </View>
 
-        <View className="mt-auto space-y-4">
-          <Button size="lg" onPress={handleConfirm}>
-            Confirm and Board
-          </Button>
-          <Button
-            size="lg"
-            variant="outline"
-            onPress={() => setShowRejectionModal(true)}
-            className="border-error"
-          >
-            <Text className="text-error">Reject Ride</Text>
-          </Button>
-        </View>
+      <View className="flex-row items-center mb-8 bg-blue-50 p-4 rounded-lg">
+        <Shield className="text-blue-500 mr-2" />
+        <Text className="text-blue-800 flex-1">
+          For your safety, ensure the driver's photo, vehicle model, and plate
+          number match the information displayed in the app.
+        </Text>
+      </View>
 
-        <Modal
-          visible={showRejectionModal}
-          transparent
-          animationType="slide"
-          onRequestClose={() => setShowRejectionModal(false)}
+      <View className="mt-auto mb-12 gap-6">
+        <Button size="lg" onPress={handleConfirm}>
+          Confirm and Board
+        </Button>
+        <Button
+          size="lg"
+          variant="outline"
+          onPress={() => setShowRejectionModal(true)}
+          className="border-error"
         >
-          <View className="flex-1 justify-end bg-black/50">
-            <View className="bg-white rounded-t-3xl p-6">
-              <Text className="text-xl font-semibold mb-6">
-                Reasons to reject the ride
-              </Text>
+          <Text className="text-error">Reject Ride</Text>
+        </Button>
+      </View>
 
-              {[
-                "Unverified Driver",
-                "Mismatched Plate Number",
-                "Suspicious Activity",
-              ].map((reason) => (
-                <Pressable
-                  key={reason}
-                  onPress={() => setSelectedReason(reason)}
-                  className={`flex-row items-center p-4 rounded-lg mb-3 ${
-                    selectedReason === reason ? "bg-error/10" : "bg-neutral-50"
-                  }`}
-                >
-                  <View
-                    className={`w-6 h-6 rounded-full mr-3 border-2 items-center justify-center
+      <Modal
+        visible={showRejectionModal}
+        transparent
+        animationType="slide"
+        onRequestClose={() => setShowRejectionModal(false)}
+      >
+        <View className="flex-1 justify-end bg-black/50">
+          <View className="bg-white rounded-t-3xl p-6">
+            <Text className="text-xl font-semibold mb-6">
+              Reasons to reject the ride
+            </Text>
+
+            {[
+              "Unverified Driver",
+              "Mismatched Plate Number",
+              "Suspicious Activity",
+            ].map((reason) => (
+              <Pressable
+                key={reason}
+                onPress={() => setSelectedReason(reason)}
+                className={`flex-row items-center p-4 rounded-lg mb-3 ${
+                  selectedReason === reason ? "bg-error/10" : "bg-neutral-50"
+                }`}
+              >
+                <View
+                  className={`w-6 h-6 rounded-full mr-3 border-2 items-center justify-center
                       ${
                         selectedReason === reason
                           ? "border-error"
                           : "border-neutral-300"
                       }`}
-                  >
-                    {selectedReason === reason && (
-                      <View className="w-3 h-3 rounded-full bg-error" />
-                    )}
-                  </View>
-                  <Text
-                    className={
-                      selectedReason === reason
-                        ? "text-error"
-                        : "text-neutral-700"
-                    }
-                  >
-                    {reason}
-                  </Text>
-                </Pressable>
-              ))}
+                >
+                  {selectedReason === reason && (
+                    <View className="w-3 h-3 rounded-full bg-error" />
+                  )}
+                </View>
+                <Text
+                  className={
+                    selectedReason === reason
+                      ? "text-error"
+                      : "text-neutral-700"
+                  }
+                >
+                  {reason}
+                </Text>
+              </Pressable>
+            ))}
 
-              <View className="flex-row space-x-4 mt-4">
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="flex-1"
-                  onPress={() => setShowRejectionModal(false)}
-                >
-                  Cancel
-                </Button>
-                <Button
-                  size="lg"
-                  className="flex-1 bg-error hover:bg-error/90"
-                  disabled={!selectedReason}
-                  onPress={handleReject}
-                >
-                  Submit
-                </Button>
-              </View>
+            <View className="flex-row space-x-4 mt-4">
+              <Button
+                size="lg"
+                variant="outline"
+                className="flex-1"
+                onPress={() => setShowRejectionModal(false)}
+              >
+                Cancel
+              </Button>
+              <Button
+                size="lg"
+                className="flex-1 bg-error hover:bg-error/90"
+                disabled={!selectedReason}
+                onPress={handleReject}
+              >
+                Submit
+              </Button>
             </View>
           </View>
-        </Modal>
-      </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 }

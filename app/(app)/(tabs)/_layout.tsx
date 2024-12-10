@@ -7,6 +7,7 @@ import {
   TextStyle,
   TouchableOpacity,
   StyleSheet,
+  Image,
 } from "react-native";
 import { Text } from "@/components/ui/Text";
 import { cn } from "@/lib/cn";
@@ -23,7 +24,7 @@ import { FontAwesome } from "@expo/vector-icons";
 const styles = StyleSheet.create({
   alertButton: {
     position: "absolute",
-    top: -20,
+    top: -30,
     alignSelf: "center",
   },
   alertIconContainer: {
@@ -64,8 +65,9 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => <HomeIcon size={28} color={color} />,
         }}
       />
+
       <Tabs.Screen
-        name="appointment"
+        name="vehicle-history"
         options={{
           title: "Appointment",
           tabBarIcon: ({ color }) => (
@@ -78,16 +80,22 @@ export default function TabLayout() {
         options={{
           title: "",
           tabBarButton: (props) => (
+            // @ts-ignore
             <TouchableOpacity {...props} style={styles.alertButton}>
               <View style={styles.alertIconContainer}>
-                <FontAwesome size={32} name="bell" color="#fff" />
+                <Image
+                  source={require("@/assets/images/alert-button.png")}
+                  width={60}
+                  height={60}
+                />
+                {/* <FontAwesome size={32} name="bell" color="#fff" /> */}
               </View>
             </TouchableOpacity>
           ),
         }}
       />
       <Tabs.Screen
-        name="notifications"
+        name="qr-code-scanner"
         options={{
           title: "Notifications",
           tabBarIcon: ({ color }) => (
@@ -105,11 +113,24 @@ export default function TabLayout() {
 
       {/* Hidden routes */}
       <Tabs.Screen
-        name="personal-info/emergency-contact"
+        name="personal-info/emergency-contact/index"
         options={{
           href: null,
         }}
       />
+      <Tabs.Screen
+        name="personal-info/emergency-contact/add-contact"
+        options={{
+          href: null,
+        }}
+      />
+      <Tabs.Screen
+        name="personal-info/emergency-contact/[contactId]"
+        options={{
+          href: null,
+        }}
+      />
+
       <Tabs.Screen
         name="personal-info/settings"
         options={{
@@ -123,161 +144,24 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        name="personal-info/profile"
+        options={{
+          href: null,
+        }}
+      />
+
+      {/* <Tabs.Screen
         name="qr-code-scanner"
         options={{
           href: null,
         }}
-      />
-      <Tabs.Screen
+      /> */}
+      {/* <Tabs.Screen
         name="vehicle-history"
         options={{
           href: null,
         }}
-      />
+      /> */}
     </Tabs>
   );
 }
-
-type CustomTabBarProps = {
-  state: {
-    index: number;
-    routes: Array<{
-      key: string;
-      name: string;
-    }>;
-  };
-  descriptors: {
-    [key: string]: {
-      options: {
-        tabBarLabel?: string;
-        title?: string;
-      };
-    };
-  };
-  navigation: {
-    emit: (event: {
-      type: string;
-      target: string;
-      canPreventDefault: boolean;
-    }) => void;
-    navigate: (name: string) => void;
-  };
-};
-function CustomTabBar({ state, descriptors, navigation }: CustomTabBarProps) {
-  return (
-    <View style={tabBarStyle}>
-      {state.routes.map((route, index) => {
-        const { options } = descriptors[route.key];
-        const label =
-          options.tabBarLabel !== undefined
-            ? options.tabBarLabel
-            : options.title !== undefined
-            ? options.title
-            : route.name;
-
-        const isFocused = state.index === index;
-
-        const onPress = () => {
-          const event = navigation.emit({
-            type: "tabPress",
-            target: route.key,
-            canPreventDefault: true,
-          });
-
-          // @ts-ignore
-          if (!isFocused && !event.defaultPrevented) {
-            navigation.navigate(route.name);
-          }
-        };
-
-        // Alert button (big red button)
-        if (route.name === "alert") {
-          return (
-            <Pressable
-              key={route.key}
-              onPress={onPress}
-              style={alertButtonStyle}
-            >
-              <View style={alertButtonInnerStyle}>
-                <AlertCircle size={32} color="white" />
-              </View>
-            </Pressable>
-          );
-        }
-
-        // Regular tab buttons
-        return (
-          <Pressable key={route.key} onPress={onPress} style={tabItemStyle}>
-            {route.name === "index" && (
-              <Home size={24} color={isFocused ? "#FF331A" : "#5E5E5E"} />
-            )}
-            {route.name === "appointment" && (
-              <Calendar size={24} color={isFocused ? "#FF331A" : "#5E5E5E"} />
-            )}
-            {route.name === "personal-info/index" && (
-              <User size={24} color={isFocused ? "#FF331A" : "#5E5E5E"} />
-            )}
-            <Text
-              style={[
-                tabLabelStyle,
-                { color: isFocused ? "#FF331A" : "#5E5E5E" },
-              ]}
-            >
-              {label}
-            </Text>
-          </Pressable>
-        );
-      })}
-    </View>
-  );
-}
-
-const tabBarStyle: ViewStyle = {
-  flexDirection: "row",
-  alignItems: "center",
-  justifyContent: "space-around",
-  borderTopWidth: 1,
-  borderTopColor: "#E5E5E5",
-  backgroundColor: "white",
-  paddingBottom: 2,
-  paddingTop: 2,
-  height: 60,
-};
-
-const tabItemStyle: ViewStyle = {
-  alignItems: "center",
-  justifyContent: "center",
-  flex: 1,
-};
-
-const alertButtonStyle: ViewStyle = {
-  position: "absolute",
-  top: -30,
-  left: "50%",
-  marginLeft: -30,
-  width: 60,
-  height: 60,
-  borderRadius: 30,
-  backgroundColor: "#FF331A",
-  justifyContent: "center",
-  alignItems: "center",
-  elevation: 5,
-  shadowColor: "#000",
-  shadowOffset: { width: 0, height: 2 },
-  shadowOpacity: 0.25,
-  shadowRadius: 3.84,
-};
-
-const alertButtonInnerStyle: ViewStyle = {
-  width: 56,
-  height: 56,
-  borderRadius: 28,
-  backgroundColor: "#FF331A",
-  justifyContent: "center",
-  alignItems: "center",
-};
-
-const tabLabelStyle: TextStyle = {
-  fontSize: 12,
-  marginTop: 4,
-};

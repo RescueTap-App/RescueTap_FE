@@ -4,8 +4,8 @@ import {
   Pressable,
   PressableProps,
   View,
+  Text,
 } from "react-native";
-import { Text } from "./Text";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/cn";
 
@@ -82,7 +82,7 @@ const Button = React.forwardRef<View, ButtonProps>(
     const content = (
       <View
         className={cn(
-          "flex-row items-center justify-center",
+          "flex-row items-center justify-center gap-2",
           isLoading && "opacity-80"
         )}
       >
@@ -97,7 +97,7 @@ const Button = React.forwardRef<View, ButtonProps>(
         {typeof children === "string" ? (
           <Text
             className={cn(
-              "text-lg font-medium text-white leading-none",
+              "text-[18px] font-medium text-white leading-none",
               variant === "destructive" && "text-destructive-foreground",
               variant === "outline" && "text-primary-base",
               variant === "secondary" && "text-secondary-foreground",

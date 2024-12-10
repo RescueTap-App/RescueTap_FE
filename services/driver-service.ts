@@ -1,4 +1,4 @@
-import useSWR from "swr";
+import useSWR, { SWRResponse } from "swr";
 import { API_URL } from "@/constants/api";
 import { axiosInstance } from "@/constants/api";
 
@@ -26,9 +26,31 @@ interface Driver {
   termsAndConditionAgreement: boolean;
   privacyConsent: boolean;
 }
+
+interface DriverResponse {
+  numberOfTrips: number;
+  termsAndConditionsAgreement: boolean;
+  privacyConsent: boolean;
+  _id: string;
+  driverName: string;
+  contactInformation: string;
+  status: "Active" | any;
+  totalTripsCompleted: number;
+  plateNumber: string;
+  vehicle: string;
+  image: string;
+  registrationDate: Date;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 class DriverService {
-  public getAllDrivers() {
-    return useSWR(`${API_URL}/drivers`, {});
+  public getAllDrivers(): SWRResponse<DriverResponse[], any, any> {
+    return useSWR(`/drivers`);
+  }
+
+  public getDriver(id: string): SWRResponse<DriverResponse, any, any> {
+    return useSWR(`/drivers/${id}`);
   }
 
   public async createDriver(params: Driver) {
@@ -48,3 +70,5 @@ class DriverService {
     }
   }
 }
+
+export const driverService = new DriverService();

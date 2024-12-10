@@ -1,7 +1,6 @@
 import React from "react";
-import { View, ScrollView, Image, Pressable } from "react-native";
+import { View, ScrollView, Text, Pressable } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Text } from "@/components/ui/Text";
 import { InputField } from "@/components/ui/InputField";
 import { Button } from "@/components/ui/Button";
 import { useForm, Controller } from "react-hook-form";
@@ -17,6 +16,7 @@ import {
 } from "lucide-react-native";
 import { Avatar } from "@/components/ui/Avatar";
 import { useRouter } from "expo-router";
+import { useAuth } from "@/components/AuthContext";
 
 const personalInfoSchema = z.object({
   firstName: z.string().min(2, "First name must be at least 2 characters"),
@@ -30,6 +30,7 @@ type PersonalInfoData = z.infer<typeof personalInfoSchema>;
 
 export default function PersonalInfoScreen() {
   const router = useRouter();
+  const { user } = useAuth();
   const {
     control,
     handleSubmit,
@@ -37,10 +38,10 @@ export default function PersonalInfoScreen() {
   } = useForm<PersonalInfoData>({
     resolver: zodResolver(personalInfoSchema),
     defaultValues: {
-      firstName: "Femi",
-      lastName: "Stephen",
-      email: "femistephen@gmail.com",
-      phoneNumber: "09035435555",
+      firstName: user?.firstName ?? undefined,
+      lastName: user?.lastName ?? undefined,
+      email: user?.email ?? undefined,
+      phoneNumber: user?.phoneNumber ?? undefined,
       address: "123 Main St, Lagos, Nigeria",
     },
   });
@@ -48,6 +49,7 @@ export default function PersonalInfoScreen() {
   const onSubmit = (data: PersonalInfoData) => {
     console.log(data);
     // Handle form submission
+    router.replace("/(app)/(tabs)/personal-info");
   };
 
   return (
@@ -58,18 +60,20 @@ export default function PersonalInfoScreen() {
             <Pressable onPress={() => router.back()}>
               <ArrowLeft size={24} color="#000" />
             </Pressable>
-            <Text className="text-lg font-semibold ml-4">
+            <Text className="text-xl font-semibold ml-4">
               Personal Information
             </Text>
           </View>
 
-          <View className="items-center mb-6">
-            <Avatar source="" size={"2xl"} />
-            {/* <Image
-              source={{ uri: "/placeholder.svg?height=100&width=100" }}
-              className="w-24 h-24 rounded-full mb-2"
-            /> */}
-            <Text className="text-lg font-semibold">Femi Stephen</Text>
+          <View className="items-center mb-6 gap-4">
+            <Avatar
+              source=""
+              size={"3xl"}
+              fallback={user?.firstName ?? user?.lastName}
+            />
+            <Text className="text-xl font-semibold">
+              {user?.firstName} {user?.lastName}
+            </Text>
           </View>
 
           <View className="mb-6 flex gap-4">
@@ -78,6 +82,7 @@ export default function PersonalInfoScreen() {
               name="firstName"
               render={({ field: { onChange, value } }) => (
                 <InputField
+                  readOnly
                   label="First Name"
                   value={value}
                   onChangeText={onChange}
@@ -90,6 +95,7 @@ export default function PersonalInfoScreen() {
               name="lastName"
               render={({ field: { onChange, value } }) => (
                 <InputField
+                  readOnly
                   label="Last Name"
                   value={value}
                   onChangeText={onChange}
@@ -102,6 +108,7 @@ export default function PersonalInfoScreen() {
               name="email"
               render={({ field: { onChange, value } }) => (
                 <InputField
+                  readOnly
                   label="Email Address"
                   value={value}
                   onChangeText={onChange}
@@ -115,6 +122,7 @@ export default function PersonalInfoScreen() {
               name="phoneNumber"
               render={({ field: { onChange, value } }) => (
                 <InputField
+                  readOnly
                   label="Phone Number"
                   value={value}
                   onChangeText={onChange}
@@ -128,6 +136,7 @@ export default function PersonalInfoScreen() {
               name="address"
               render={({ field: { onChange, value } }) => (
                 <InputField
+                  readOnly
                   label="Address"
                   value={value}
                   onChangeText={onChange}
@@ -137,9 +146,9 @@ export default function PersonalInfoScreen() {
             />
           </View>
 
-          <Button size="lg" onPress={handleSubmit(onSubmit)}>
+          {/* <Button size="lg" onPress={handleSubmit(onSubmit)}>
             Save me
-          </Button>
+          </Button> */}
         </View>
       </ScrollView>
 

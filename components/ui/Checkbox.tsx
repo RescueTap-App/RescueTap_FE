@@ -1,14 +1,21 @@
 import React, { forwardRef } from "react";
-import { TouchableOpacity, View, TouchableOpacityProps } from "react-native";
+import {
+  TouchableOpacity,
+  View,
+  TouchableOpacityProps,
+  Text,
+} from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { cn } from "@/lib/cn";
-import { Text } from "./Text";
+// import { Text } from "./Text";
+import { colors } from "@/constants/Colors";
 
 interface CheckboxProps extends Omit<TouchableOpacityProps, "onPress"> {
   checked: boolean;
   onPress: () => void;
   label?: React.ReactElement | string;
   error?: boolean;
+  rounded?: boolean;
 }
 
 /**
@@ -30,6 +37,7 @@ const Checkbox = forwardRef<View, CheckboxProps>(
       label,
       error = false,
       disabled = false,
+      rounded = false,
       className,
       style,
       ...props
@@ -53,24 +61,33 @@ const Checkbox = forwardRef<View, CheckboxProps>(
       >
         <View
           className={cn(
-            "w-5 h-5 border-2 rounded justify-center items-center mr-2",
-            checked ? "bg-primary border-primary" : "border-gray-400",
+            "w-7 h-7 border-2 border-primary-500 rounded justify-center items-center mr-2",
+            checked ? "bg-transparent border-primary-500" : "border-gray-400",
+            rounded && "rounded-full",
             error && "border-destructive",
             disabled && "opacity-50"
           )}
         >
-          {checked && (
+          {checked && !rounded && (
             <AntDesign
               name="check"
               size={16}
-              color={error ? "rgb(239 68 68)" : "white"}
+              color={error ? "rgb(239 68 68)" : colors.primary[500]}
+            />
+          )}
+          {checked && rounded && (
+            <View
+              className={cn(
+                "w-3 h-3 rounded-full bg-primary-500",
+                error && "bg-destructive"
+              )}
             />
           )}
         </View>
         {typeof label === "string" ? (
           <Text
-            variant="body"
             className={cn(
+              "text-lg font-normal break-words",
               error && "text-destructive",
               disabled && "text-muted-foreground"
             )}

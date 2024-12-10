@@ -9,6 +9,7 @@ import { AuthProvider } from "@/components/AuthContext";
 import { SWRConfig } from "swr";
 import { RootLayoutNav } from "@/components/RootLayoutNav";
 import { fetcher } from "@/lib/fetcher";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -29,31 +30,33 @@ export default function RootLayout() {
   }
 
   return (
-    <AuthProvider>
-      <SWRConfig
-        value={{
-          fetcher,
-          provider: () => new Map(),
-          isOnline() {
-            return true;
-          },
-          isVisible() {
-            return true;
-          },
-          initFocus(callback) {
-            // Implement focus detection
-          },
-          initReconnect(callback) {
-            // Implement reconnect detection
-          },
-          onError: (error) => {
-            console.error("SWR Error:", error);
-          },
-        }}
-      >
-        <RootLayoutNav />
-        <StatusBar style="auto" />
-      </SWRConfig>
-    </AuthProvider>
+    <SafeAreaProvider>
+      <AuthProvider>
+        <SWRConfig
+          value={{
+            fetcher,
+            provider: () => new Map(),
+            isOnline() {
+              return true;
+            },
+            isVisible() {
+              return true;
+            },
+            initFocus(callback) {
+              // Implement focus detection
+            },
+            initReconnect(callback) {
+              // Implement reconnect detection
+            },
+            onError: (error) => {
+              console.error("SWR Error:", error);
+            },
+          }}
+        >
+          <RootLayoutNav />
+          <StatusBar style="auto" />
+        </SWRConfig>
+      </AuthProvider>
+    </SafeAreaProvider>
   );
 }

@@ -195,7 +195,7 @@ export default function SignUpIndexScreen() {
         />
       </View>
 
-      <View className="mt-8">
+      <View className="mt-8 flex-1 justify-between">
         <Button
           size="lg"
           isLoading={isSubmitting}
@@ -214,7 +214,8 @@ export default function SignUpIndexScreen() {
         </Button>
         <Pressable onPress={() => router.replace("/(auth)/login")}>
           <Text className="text-center">
-            Already have an account? <Text className="text-error">Log in</Text>
+            Already have an account?{" "}
+            <Text className="text-accent-600">Sign in</Text>
           </Text>
         </Pressable>
       </View>

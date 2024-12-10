@@ -1,17 +1,37 @@
 import useSWR, { SWRResponse } from "swr";
 import { axiosInstance } from "@/constants/api";
 import { AxiosError, AxiosResponse } from "axios";
+
+interface EmergencyContactData {
+  _id: string;
+  address: string;
+  name: string;
+  notify: boolean;
+  number: string;
+  relationship: string;
+}
 class EmergencyService {
   public async addEmergencyContact(
-    name: string,
-    phone: string
-  ): Promise<AxiosResponse<any, any> | AxiosError> {
+    userId: string,
+    arg: {
+      name: string;
+      number: string;
+      address: string;
+      relationship: string;
+      notify: boolean;
+    }
+  ): Promise<any | AxiosError> {
     try {
-      const response = await axiosInstance.post("/asdfsdafdsf", {
-        name,
-        phone,
-      });
-      return response;
+      const form = new FormData();
+      for (let keys in arg) {
+        // @ts-ignore
+        form.append(keys, arg[keys]);
+      }
+      const response = await axiosInstance.post(
+        `users/${userId}/emergency-contact`,
+        form
+      );
+      return response.data;
     } catch (error: any) {
       throw new Error(
         error.response?.data?.message || "Error adding emergency contact"
@@ -19,14 +39,22 @@ class EmergencyService {
     }
   }
 
-  public getEmergencyContact(name: string): SWRResponse<any, any, any> {
-    return useSWR("/dasfdsf");
+  public getEmergencyContact(arg: {
+    userid: string;
+    contactId: string;
+  }): SWRResponse<{ emergencyContact: EmergencyContactData }, any, any> {
+    return useSWR(`/users/${arg.userid}/emergency-contact/${arg.contactId}`);
   }
 
-  public getEmergencyContacts() {
-    return useSWR("/dasfdsf");
+  /** Gets user emergency contacts */
+  public getEmergencyContacts(
+    userId: string
+  ): SWRResponse<{ emergencyContacts: EmergencyContactData[] }, any, any> {
+    return useSWR(`/users/${userId}/emergency-contacts`);
   }
 }
+
+export const emergencyService = new EmergencyService();
 
 // class EmergencyService {
 //   private static instance: EmergencyService;

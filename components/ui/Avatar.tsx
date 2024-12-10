@@ -15,6 +15,8 @@ const avatarVariants = cva(
         lg: "w-12 h-12",
         xl: "w-16 h-16",
         "2xl": "w-24 h-24",
+        "3xl": "w-28 h-28",
+        "4xl": "w-32 h-32",
       },
       shape: {
         circle: "rounded-full",
