@@ -47,7 +47,7 @@ export default function AlertScreen() {
         </View>
 
         <View className="flex-1">
-          <Camera
+          {/* <Camera
             ratio="16:9"
             style={StyleSheet.absoluteFillObject}
             barCodeScannerSettings={{
@@ -55,11 +55,9 @@ export default function AlertScreen() {
             }}
             onBarCodeScanned={(result) => {
               console.log(result);
-              // Handle QR code data
             }}
           >
             <View className="flex-1 justify-center items-center">
-              {/* QR Frame Overlay */}
               <View className="w-64 h-64 border-2 border-white rounded-lg">
                 <View className="absolute -top-2 -left-2 w-4 h-4 border-t-2 border-l-2 border-white" />
                 <View className="absolute -top-2 -right-2 w-4 h-4 border-t-2 border-r-2 border-white" />
@@ -67,7 +65,7 @@ export default function AlertScreen() {
                 <View className="absolute -bottom-2 -right-2 w-4 h-4 border-b-2 border-r-2 border-white" />
               </View>
             </View>
-          </Camera>
+          </Camera> */}
         </View>
 
         <View className="p-4">

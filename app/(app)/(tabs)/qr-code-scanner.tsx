@@ -72,7 +72,7 @@ export default function QrCodeScannerScreen() {
       </View>
 
       <View className="flex-1">
-        <CameraView
+        {/* <CameraView
           ratio="16:9"
           style={StyleSheet.absoluteFillObject}
           barcodeScannerSettings={{
@@ -85,7 +85,6 @@ export default function QrCodeScannerScreen() {
           facing="back"
         >
           <View className="flex-1 justify-center items-center">
-            {/* QR Frame Overlay */}
             <View className="w-64 h-64 border-2 border-white rounded-lg">
               <View className="absolute -top-2 -left-2 w-4 h-4 border-t-2 border-l-2 border-white" />
               <View className="absolute -top-2 -right-2 w-4 h-4 border-t-2 border-r-2 border-white" />
@@ -93,7 +92,7 @@ export default function QrCodeScannerScreen() {
               <View className="absolute -bottom-2 -right-2 w-4 h-4 border-b-2 border-r-2 border-white" />
             </View>
           </View>
-        </CameraView>
+        </CameraView> */}
       </View>
 
       <View className="p-4 pb-12">
