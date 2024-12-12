@@ -12,7 +12,7 @@ import { Avatar } from "@/components/ui/Avatar";
 import { View, Text, Pressable } from "react-native";
 import { Button } from "@/components/ui/Button";
 import { useAuth } from "@/components/AuthContext";
-import { colors } from "@/constants/Colors";
+import { colors } from "@/constants/colors";
 export default function PersonalInfoScreen() {
   const { logout, user } = useAuth();
   return (

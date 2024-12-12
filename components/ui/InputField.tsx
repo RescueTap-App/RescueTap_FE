@@ -4,7 +4,7 @@ import { Text } from "./Text";
 import { Feather } from "@expo/vector-icons";
 import { cn } from "@/lib/cn";
 import { cva, type VariantProps } from "class-variance-authority";
-import { colors } from "@/constants/Colors";
+import { colors } from "@/constants/colors";
 
 const inputFieldVariants = cva(
   "w-full min-h-[48px] px-4 py-2 rounded-lg border-[1px] bg-white",
@@ -128,7 +128,7 @@ const InputField = forwardRef<TextInput, InputFieldProps>(
               className
             )}
             style={[
-              style,
+              // style,
               error && { borderColor: colors.error },
               isFocused && { borderColor: colors.primary.base },
             ]}

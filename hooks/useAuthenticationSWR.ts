@@ -32,3 +32,7 @@
 // ) {
 //   return useSWR<Data, Error>(`${API_URL}${key}`, fetcher, config);
 // }
+
+export function useSomething() {
+  console.log("something");
+}

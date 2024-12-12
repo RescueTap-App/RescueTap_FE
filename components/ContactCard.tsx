@@ -1,7 +1,7 @@
 import { Pressable, Text, View } from "react-native";
 import { Link, type Href } from "expo-router";
 import { Edit } from "lucide-react-native";
-import { colors } from "@/constants/Colors";
+import { colors } from "@/constants/colors";
 
 export function ContactCard(props: { href: Href; who: string }) {
   return (

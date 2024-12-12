@@ -4,7 +4,6 @@ import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import React from "react";
-import "react-native-reanimated";
 import { AuthProvider } from "@/components/AuthContext";
 import { SWRConfig } from "swr";
 import { RootLayoutNav } from "@/components/RootLayoutNav";

@@ -8,7 +8,7 @@ import {
 import { AntDesign } from "@expo/vector-icons";
 import { cn } from "@/lib/cn";
 // import { Text } from "./Text";
-import { colors } from "@/constants/Colors";
+import { colors } from "@/constants/colors";
 
 interface CheckboxProps extends Omit<TouchableOpacityProps, "onPress"> {
   checked: boolean;
