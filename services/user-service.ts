@@ -11,6 +11,7 @@ export interface UserInfo {
   password: string;
   verified: boolean;
   role: "user";
+  address?: string;
   emergencyContact: {
     name: string;
     number: string;
@@ -29,6 +30,31 @@ class UserService {
       return response.data;
     } catch (error) {
       console.error("Error fetching user by ID:", error);
+      return null;
+    }
+  }
+
+  async uploadProfilePhoto(form: FormData): Promise<{ data: string }> {
+    const response = await axios.post(`${API_URL}/upload`, form, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+
+    const data = response.data;
+    return data?.data;
+  }
+
+  async updateUserInfo(
+    userId: string,
+    userInfo: Pick<
+      UserInfo,
+      "firstName" | "lastName" | "phoneNumber" | "address"
+    >
+  ): Promise<User | null> {
+    try {
+      const response = await axios.put(`${API_URL}/users/${userId}`, userInfo);
+      return response.data;
+    } catch (error) {
+      console.error("Error updating user info:", error);
       return null;
     }
   }

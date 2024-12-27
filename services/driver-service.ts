@@ -69,6 +69,30 @@ class DriverService {
       return null; // Return null or handle error as needed
     }
   }
+
+  public async confirmRide(arg: {
+    userId: string;
+    driverId: string;
+    isConfirmed: boolean;
+    rejectionReason?: string;
+  }) {
+    const formData = new FormData();
+    for (let keys in arg) {
+      // @ts-ignore
+      formData.append(keys, arg[keys]);
+    }
+    try {
+      const response = await axiosInstance.post(
+        `${API_URL}/travels/`,
+        formData
+      );
+      console.log(response);
+      return response.data();
+    } catch (error) {
+      console.debug("error confirmRide", error);
+      return null; // Return null or handle error as needed
+    }
+  }
 }
 
 export const driverService = new DriverService();

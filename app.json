@@ -43,6 +43,12 @@
           "microphonePermission": "Allow RescueTap to access your microphone",
           "recordAudioAndroid": true
         }
+      ],
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow RescueTap to use your location."
+        }
       ]
     ],
     "experiments": {

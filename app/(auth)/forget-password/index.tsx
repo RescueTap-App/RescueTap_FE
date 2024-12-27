@@ -53,7 +53,7 @@ export default function ForgotPasswordScreen() {
       >
         <View className="p-6 flex-1">
           <View className="mb-8">
-            <Text className="text-2xl font-bold mb-2">Forgot Password</Text>
+            <Text className="text-3xl font-bold mb-2">Forgot Password</Text>
             <Text className="text-neutral-600">
               Enter your registered phone number to reset your password
             </Text>

@@ -49,7 +49,7 @@ export default function OTPVerificationScreen() {
         </Pressable>
 
         <View className="mb-8 mt-4">
-          <Text className="text-2xl font-bold mb-2">Enter OTP</Text>
+          <Text className="text-3xl font-bold mb-2">Enter OTP</Text>
           <Text className="text-neutral-600">
             {/* Please enter the OTP sent to your phone */}
             Enter the 4 digit code sent to{" "}
@@ -62,7 +62,9 @@ export default function OTPVerificationScreen() {
             <TextInput
               key={index}
               ref={(ref) => (inputRefs.current[index] = ref as TextInput)}
-              className="w-16 h-16 border-2 border-neutral-200 rounded-lg text-center text-2xl"
+              className={`w-[72px] h-[72px] border-2 ${
+                !isOtpComplete ? "border-error" : "border-neutral-200"
+              } rounded-lg text-center text-2xl`}
               maxLength={1}
               keyboardType="number-pad"
               value={otp[index]}

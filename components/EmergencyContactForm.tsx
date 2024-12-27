@@ -34,29 +34,37 @@ type EmergencyContactData = z.infer<typeof emergencyContactSchema>;
 
 type Props = {
   mode?: "create" | "edit";
+  index?: number;
   data?: Required<EmergencyContactData>;
 };
-export function EmergencyContactForm({ mode = "create", data }: Props) {
+export function EmergencyContactForm({ mode = "create", data, index }: Props) {
   const router = useRouter();
   const { user } = useAuth();
 
-  const { control, handleSubmit, formState } = useForm<EmergencyContactData>({
-    resolver: zodResolver(emergencyContactSchema),
-    defaultValues: {
-      name: data?.name ?? "",
-      number: data?.number ?? "",
-      relationship: data?.relationship ?? "",
-      address: data?.address ?? "",
-      notify: data?.notify ?? true,
-    },
-  });
+  const { control, handleSubmit, formState, reset } =
+    useForm<EmergencyContactData>({
+      resolver: zodResolver(emergencyContactSchema),
+      defaultValues: {
+        name: data?.name ?? "",
+        number: data?.number ?? "",
+        relationship: data?.relationship ?? "",
+        address: data?.address ?? "",
+        notify: data?.notify ?? true,
+      },
+    });
 
   const onSubmit = async (payload: EmergencyContactData) => {
     try {
-      const data = await emergencyService.addEmergencyContact(
-        user?._id!,
-        payload
-      );
+      if (mode === "edit") {
+        await emergencyService.updateEmergencyContact({
+          body: payload,
+          index: index!,
+          userid: user?._id!,
+        });
+      } else {
+        await emergencyService.addEmergencyContact(user?._id!, payload);
+      }
+      reset();
       router.replace("/(app)/(tabs)/personal-info/emergency-contact");
       mutate(`/users/${user?._id!}/emergency-contacts`);
     } catch (error) {
@@ -155,7 +163,7 @@ export function EmergencyContactForm({ mode = "create", data }: Props) {
           size="lg"
           onPress={handleSubmit(onSubmit)}
         >
-          Save
+          {mode == "edit" ? "Edit" : "Save"}
         </Button>
       </View>
     </SafeAreaView>

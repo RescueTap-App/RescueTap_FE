@@ -120,7 +120,7 @@ export default function LoginIndexScreen() {
       </View>
 
       <View className="mt-auto flex gap-4">
-        <Button
+        {/* <Button
           size="lg"
           variant={"outline"}
           onPress={async () => {
@@ -132,7 +132,7 @@ export default function LoginIndexScreen() {
           }}
         >
           Test reset
-        </Button>
+        </Button> */}
         <Button
           size="lg"
           isLoading={isSubmitting}

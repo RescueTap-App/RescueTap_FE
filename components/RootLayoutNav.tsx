@@ -19,8 +19,6 @@ export function RootLayoutNav() {
       router.replace("/(app)/(tabs)");
     } else if (!user && inAppGroup) {
       router.replace("/(auth)/login");
-    } else {
-      router.replace("/+not-found");
     }
   }, [user, segments, isLoading, hasSeenOnboarding]);
 

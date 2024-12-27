@@ -10,11 +10,24 @@ type ActiveRideProps = {
   licensePlate: string;
   cluster: string;
   vehicleName: string;
+  driverId: string;
 };
 export function ActiveRideCard(props: ActiveRideProps) {
-  const router = useRouter();
   return (
-    <Link asChild href={`/(app)/driver-details`}>
+    <Link
+      asChild
+      href={{
+        pathname: "/(app)/driver-details",
+        params: {
+          name: props.driverName,
+          image: props.driverImage,
+          vehicleImage: props.vehicleImage,
+          licensePlate: props.licensePlate,
+          cluster: props.cluster,
+          id: props.driverId,
+        },
+      }}
+    >
       <Pressable
         onPress={() => {
           // router.push({

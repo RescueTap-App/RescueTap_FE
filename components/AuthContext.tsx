@@ -2,6 +2,7 @@ import React from "react";
 import { authService, User, AuthTokens } from "@/services/auth-service";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { userService } from "@/services/user-service";
+import { API_URL } from "@/constants/api";
 
 interface AuthContextType {
   user: User | null;
@@ -39,10 +40,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         setHasSeenOnboarding(onboardingStatus === "true");
 
         if (tokens) {
-          // Implement user data fetching using the access token
-          // You might want to add an endpoint to fetch user data
-          const response = await authService.refreshToken();
-          // Update user data here
+          try {
+            const response = await authService.refreshToken();
+            const userData = await fetchUserData({
+              userId: tokens.userId,
+              accessToken: response.access_token,
+            });
+            if (userData) {
+              setUser(userData);
+            }
+          } catch (error) {
+            await logout();
+            console.error("Token refresh failed:", error);
+            // Handle token refresh failure (e.g., force logout)
+          }
         }
       } catch (error) {
         console.error("Auth initialization error:", error);
@@ -78,8 +89,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const logout = async () => {
     await authService.logout();
+    await AsyncStorage.removeItem("userId");
     setUser(null);
-    setOnboardingStatus(false);
+    // setOnboardingStatus(false);
   };
 
   const setOnboardingStatus = async (value: boolean) => {
@@ -113,9 +125,28 @@ export const useAuth = () => {
   return context;
 };
 
-async function fetchUserData(accessToken: string): Promise<User | null> {
-  // Implement user data fetching using the access token
-  // This is just a placeholder implementation
-  const user = await userService.getUserById("asdf");
-  return user;
-}
+const fetchUserData = async ({
+  accessToken,
+  userId,
+}: {
+  accessToken: string;
+  userId: string;
+}): Promise<User | null> => {
+  // Implement your user data fetching logic here using the accessToken
+  // Example using fetch:
+  try {
+    const response = await fetch(`${API_URL}/users/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    return data as User;
+  } catch (error) {
+    console.error("Error fetching user data:", error);
+    return null;
+  }
+};

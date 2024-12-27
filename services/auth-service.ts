@@ -6,6 +6,7 @@ import { API_URL } from "@/constants/api";
 export interface AuthTokens {
   access_token: string;
   refresh_token: string;
+  userId: string;
 }
 
 export interface User {
@@ -64,12 +65,16 @@ class AuthService {
     if (tokens.refresh_token) {
       await AsyncStorage.setItem("refreshToken", tokens.refresh_token);
     }
+    if (tokens.userId) {
+      await AsyncStorage.setItem("userId", tokens.userId);
+    }
   }
   async getTokens(): Promise<AuthTokens | null> {
     const accessToken = await AsyncStorage.getItem("accessToken");
     const refreshToken = await AsyncStorage.getItem("refreshToken");
-    if (accessToken && refreshToken) {
-      return { access_token: accessToken, refresh_token: refreshToken };
+    const userId = await AsyncStorage.getItem("userId");
+    if (accessToken && refreshToken && userId) {
+      return { access_token: accessToken, refresh_token: refreshToken, userId };
     }
     return null;
   }
@@ -83,7 +88,11 @@ class AuthService {
           password,
         }
       );
-      await this.setTokens(response.data);
+      // await this.setTokens(response.data);
+      await this.setTokens({
+        ...response.data,
+        userId: response.data.user._id,
+      });
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -117,6 +126,7 @@ class AuthService {
   async logout(): Promise<void> {
     await AsyncStorage.removeItem("accessToken");
     await AsyncStorage.removeItem("refreshToken");
+    await AsyncStorage.removeItem("userId");
   }
 
   async verifyOtp(data: { id: string; token: string }) {
@@ -152,7 +162,8 @@ class AuthService {
 
     try {
       const response = await axios.post<AuthTokens>(`${API_URL}/auth/refresh`, {
-        refresh_token: tokens.refresh_token,
+        refreshToken: tokens.refresh_token,
+        userId: tokens.userId,
       });
       await this.setTokens(response.data);
       return response.data;

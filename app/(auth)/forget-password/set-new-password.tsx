@@ -71,7 +71,7 @@ export default function SetNewPasswordScreen() {
           </Pressable>
 
           <View className="mb-8 mt-4">
-            <Text className="text-2xl font-bold mb-2">Set a new password</Text>
+            <Text className="text-3xl font-bold mb-2">Set a new password</Text>
             <Text className="text-neutral-600">
               Create an new password. Ensure it differs from previous ones for
               security

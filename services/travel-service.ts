@@ -26,8 +26,12 @@ class TravelService {
     }
   }
 
-  public getTravelByUser(id: string) {
+  public getUserVehicleHistory(id: string) {
     return useSWR(`/travels/user/${id}`, {});
+  }
+
+  public getRide(id: string) {
+    return useSWR(`/travels/${id}`);
   }
 }
 

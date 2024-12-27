@@ -3,8 +3,13 @@ import { View, Image, ActivityIndicator, Modal, Pressable } from "react-native";
 import { Text } from "@/components/ui/Text";
 import { Button } from "@/components/ui/Button";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { router } from "expo-router";
-import { ChevronLeft, AlertTriangle, Shield } from "lucide-react-native";
+import { router, useLocalSearchParams } from "expo-router";
+import {
+  ChevronLeft,
+  AlertTriangle,
+  Shield,
+  ArrowLeft,
+} from "lucide-react-native";
 import * as Haptics from "expo-haptics";
 import { driverService } from "@/services/driver-service";
 import { Avatar } from "@/components/ui/Avatar";
@@ -16,6 +21,7 @@ interface DriverDetailsProps {
     vehicleImage: string;
     licensePlate: string;
     cluster: string;
+    id: string;
   };
 }
 
@@ -26,13 +32,17 @@ export default function DriverDetailsScreen({
     vehicleImage: "/placeholder.svg?height=150&width=200",
     licensePlate: "ABC-123DE",
     cluster: "Lugbe Cluster 5",
+    id: "1",
   },
 }: DriverDetailsProps) {
+  // const { driverId } = useSearchParams();
+  const { id } = useLocalSearchParams();
+
   const {
     data,
     isLoading: loadingDriver,
     error,
-  } = driverService.getDriver("asdf");
+  } = driverService.getDriver(id as string);
   const [isLoading, setIsLoading] = React.useState(false);
   const [showRejectionModal, setShowRejectionModal] = React.useState(false);
   const [selectedReason, setSelectedReason] = React.useState<string | null>(
@@ -82,15 +92,22 @@ export default function DriverDetailsScreen({
 
   return (
     <SafeAreaView className="flex-1 bg-white p-4 gap-8">
+      <Pressable
+        onPress={() =>
+          router.canGoBack() ? router.back() : router.replace("/(app)/(tabs)")
+        }
+      >
+        <ArrowLeft size={24} color="white" />
+      </Pressable>
       {/* <Text className="text-xl font-semibold mb-6">Driver's Details</Text> */}
 
       <View className="items-center justify-center mb-8">
         <Avatar source={""} fallback="driver" shape={"circle"} size={"3xl"} />
         <Text className="text-lg font-semibold capitalize text-[20px]">
-          {driver.name}
+          {data?.driverName ?? ""}
         </Text>
         <Text className="text-accent-600 text-lg">Driver</Text>
-        <Text className="text-neutral-500 text-lg">{driver.cluster}</Text>
+        <Text className="text-neutral-500 text-lg">{data?.vehicle ?? ""}</Text>
       </View>
 
       <View className="items-center mb-8 flex-1 justify-center">
@@ -100,7 +117,7 @@ export default function DriverDetailsScreen({
         />
         <View className="bg-neutral-100 px-4 py-2 rounded-lg">
           <Text className="text-2xl font-semibold text-primary-600">
-            {driver.licensePlate}
+            {data?.plateNumber ?? ""}
           </Text>
         </View>
       </View>

@@ -1,4 +1,4 @@
-import { Tabs } from "expo-router";
+import { Tabs, usePathname, useSegments } from "expo-router";
 import React from "react";
 import {
   View,
@@ -42,11 +42,19 @@ const styles = StyleSheet.create({
   },
 });
 export default function TabLayout() {
+  const pathname = usePathname();
+  const segments = useSegments();
+
+  const isIndexScreen = pathname === "/";
+  console.log(pathname, segments[3]);
+  console.log(isIndexScreen);
+
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
+          // display: segments[2] == "(tabs)" ? "flex" : "none",
           height: 60,
           backgroundColor: "#fff",
         },
@@ -78,6 +86,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="alert"
         options={{
+          tabBarStyle: { display: segments[3] === "alert" ? "flex" : "none" },
           title: "",
           tabBarButton: (props) => (
             // @ts-ignore
@@ -104,7 +113,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="personal-info/index"
+        name="personal-info"
         options={{
           title: "Profile",
           tabBarIcon: ({ color }) => <User size={24} color={color} />,
@@ -112,7 +121,7 @@ export default function TabLayout() {
       />
 
       {/* Hidden routes */}
-      <Tabs.Screen
+      {/* <Tabs.Screen
         name="personal-info/emergency-contact/index"
         options={{
           href: null,
@@ -148,7 +157,7 @@ export default function TabLayout() {
         options={{
           href: null,
         }}
-      />
+      /> */}
 
       {/* <Tabs.Screen
         name="qr-code-scanner"

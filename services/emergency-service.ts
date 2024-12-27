@@ -1,6 +1,6 @@
 import useSWR, { SWRResponse } from "swr";
 import { axiosInstance } from "@/constants/api";
-import { AxiosError, AxiosResponse } from "axios";
+import axios, { AxiosError, AxiosResponse } from "axios";
 
 interface EmergencyContactData {
   _id: string;
@@ -22,14 +22,9 @@ class EmergencyService {
     }
   ): Promise<any | AxiosError> {
     try {
-      const form = new FormData();
-      for (let keys in arg) {
-        // @ts-ignore
-        form.append(keys, arg[keys]);
-      }
       const response = await axiosInstance.post(
         `users/${userId}/emergency-contact`,
-        form
+        arg
       );
       return response.data;
     } catch (error: any) {
@@ -52,30 +47,29 @@ class EmergencyService {
   ): SWRResponse<{ emergencyContacts: EmergencyContactData[] }, any, any> {
     return useSWR(`/users/${userId}/emergency-contacts`);
   }
+
+  async updateEmergencyContact(arg: {
+    userid: string;
+    index: number;
+    body: {
+      name: string;
+      number: string | number;
+      address: string;
+      relationship: string;
+      notify: boolean;
+    };
+  }) {
+    try {
+      const response = await axiosInstance.put(
+        `/users/${arg.userid}/emergency-contact/${arg.index}`,
+        arg.body
+      );
+      return response.data();
+    } catch (error) {
+      console.debug("error updating contact: ", error);
+      return null;
+    }
+  }
 }
 
 export const emergencyService = new EmergencyService();
-
-// class EmergencyService {
-//   private static instance: EmergencyService;
-//   private emergencyContacts: { [key: string]: string } = {};
-
-//   private constructor() {}
-
-//   public static getInstance(): EmergencyService {
-//     if (!EmergencyService.instance) {
-//       EmergencyService.instance = new EmergencyService();
-//     }
-//     return EmergencyService.instance;
-//   }
-
-//   public addEmergencyContact(name: string, phone: string): void {
-//     this.emergencyContacts[name] = phone;
-//   }
-
-//   public getEmergencyContact(name: string): string | undefined {
-//     return this.emergencyContacts[name];
-//   }
-// }
-
-// export const emergencyService = EmergencyService.getInstance();

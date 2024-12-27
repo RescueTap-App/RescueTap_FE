@@ -137,6 +137,7 @@ export default function HomePage() {
               vehicleName={driver.vehicle}
               vehicleImage={driver.driverName}
               licensePlate={driver.plateNumber}
+              driverId={driver._id}
               driverImage=""
               driverName=""
             />
